@@ -12,7 +12,7 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updatePassword } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -62,6 +62,10 @@ export async function createUser(user) {
   }
 }
 
+export async function updateMyPassword(pass){
+  const user = auth.currentUser;
+  await updatePassword(user, pass); 
+}
 export async function updateUser(user) {
   try {
     const q = collection(db, "users");
@@ -93,6 +97,13 @@ export async function usersData() {
     users.push(user);
   });
   return users;
+}
+
+export async function myUser(user) {
+  const docRef = doc(db, "users", user);
+  const docSnap = await getDoc(docRef);
+  const userData = docSnap.data();
+  return userData;
 }
 
 export async function usersExistsData(searchKey) {
@@ -155,7 +166,11 @@ export async function usersDataRangeDate(date1, date2) {
   console.log("SE consulto rango");
   const users = [];
   const q = collection(db, "users");
-  const request = query(q, where("dateVaccineTimestamp", ">=", date1), where("dateVaccineTimestamp", "<=", date2));
+  const request = query(
+    q,
+    where("dateVaccineTimestamp", ">=", date1),
+    where("dateVaccineTimestamp", "<=", date2)
+  );
 
   const querySnapshot = await getDocs(request);
 

@@ -28,6 +28,10 @@
   color: #61dafb;
 }
 
+.perfil-image{
+  height: 100px;
+  width: 80px;
+}
 .fondo {
   background: linear-gradient(
     0deg,

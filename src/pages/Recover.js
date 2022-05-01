@@ -76,7 +76,7 @@ const Recover = () => {
                 </Grid>
                 <Box mt={3} alignItems={"center"}>
                   <Button variant="contained" color="primary" type="submit">
-                    Iniciar sesión
+                    Enviar email
                   </Button>
                 </Box>
               </form>

@@ -38,7 +38,7 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       await login(data.email, data.password).then(
-        navigate("/admin/edit")
+        navigate("/user/my-profile")
       );
     } catch (error) {
       console.log(translateMessage(error.code));
