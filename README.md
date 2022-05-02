@@ -1,3 +1,71 @@
+# Challenge Kruger  🚀
+
+El presente proyecto muestra la implementación del reto Challenge Kruger 
+
+
+
+
+## Demo
+
+Ingresa a la siguiente dirección para probar la aplicación 
+
+https://kruger-challenge.vercel.app/login
+
+Ingresa con estas credenciales: 
+
+usuario: admin@prueba.com
+
+contraseña: 123456
+
+Al registrar un empleado el sistema se logea con las credenciales del empleado que son su correo y CI. 
+
+## Persistencia de datos
+
+Se ha optado por usar Firestore como base de datos para almacenar y gestionar la información de los empleados. 
+
+- CloudFirestore 
+
+
+## Librería
+
+Se opto por realizar el proyecto con:
+
+- React 
+- Material UI 
+
+Otras librerías usadas son :
+
+- React Hook Form 
+- Yup 
+## Installation
+
+Instala el proyecto en tu ordenador 
+
+```bash
+  git clone https://github.com/CarlosMaldonado1998/Kruger-Challenge.git
+  cd Kruger-Challenge
+  npm i 
+  npm run start
+```
+    
+## Variables de entorno
+
+Conseguir las claves proporcionadas de Firebase.
+
+En el repositorio se encuentra un ejemplo del archivo .env.production.example
+
+`REACT_APP_FIREBASE_API_KEY`
+
+`REACT_APP_FIREBASE_AUTH_DOMAIN=`
+
+`REACT_APP_FIREBASE_PROJECT_ID=`
+
+`REACT_APP_FIREBASE_STORAGE_BUCKET=`
+
+`REACT_APP_FIREBASE_MESSAGING_SENDER_ID=`
+
+`REACT_APP_FIREBASE_APP_ID=`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
