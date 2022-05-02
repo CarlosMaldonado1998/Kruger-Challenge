@@ -1,36 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box,
   Container,
   Grid,
   Typography,
   Paper,
-  FormControl,
-  Radio,
-  FormLabel,
-  FormControlLabel,
-  RadioGroup,
+  Dialog,
+  DialogTitle,
 } from "@mui/material";
-import { useAuth } from "../../lib/auth";
 import "../../styles/App.css";
-import FormNewEmployee from "../../components/FormNewEmployee";
-import { width } from "@mui/system";
 import {
   usersData,
-  usersDataFilter,
   usersDataNoVaccine,
   usersDataRangeDate,
   usersDataTypeVaccine,
   usersDataVaccine,
 } from "../../lib/firebase";
-import { async } from "@firebase/util";
 import TableUsers from "../../components/TableUsers";
 import PropTypes from "prop-types";
-import DialogTitle from "@mui/material/DialogTitle";
-import Dialog from "@mui/material/Dialog";
 import FormEditProfile from "../../components/FormEditProfile";
-
-import DeleteUser from "../../components/DeleteUser";
 import Filter from "../../components/Filter";
 import dayjs from "dayjs";
 const customStyle = {
@@ -67,14 +54,14 @@ const ListEmployees = () => {
     setOpen(false);
   };
 
-  const handleValidateRange =()=>{
-    if(rangeDate.firstdate !== null && rangeDate.lastdate !== null){
+  const handleValidateRange = () => {
+    if (rangeDate.firstdate !== null && rangeDate.lastdate !== null) {
       setValidateRangeDate(true);
       checkData();
-    }else{
-      setValidateRangeDate(false)
+    } else {
+      setValidateRangeDate(false);
     }
-  }
+  };
   const checkData = async () => {
     if (filter === "Todos") {
       const data = await usersData();
@@ -86,7 +73,6 @@ const ListEmployees = () => {
       const data = await usersDataNoVaccine();
       setdataUsers([...data]);
     } else if (filter === "Fechas") {
-      console.log("Entro al swith");
       if (validateRangeDate) {
         const date1 = dayjs(rangeDate.firstdate).unix();
         const date2 = dayjs(rangeDate.lastdate).unix();
@@ -120,9 +106,9 @@ const ListEmployees = () => {
                 setValues={setRangeDate}
                 onValidate={handleValidateRange}
               />
-              {
-                !validateRangeDate ? <Typography>Ingrese las fechas </Typography>: null
-              }
+              {!validateRangeDate ? (
+                <Typography>Ingrese las fechas </Typography>
+              ) : null}
               <TableUsers
                 data={dataUsers}
                 onHandleOpen={handleClickOpen}

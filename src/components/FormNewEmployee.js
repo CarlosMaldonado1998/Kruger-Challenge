@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Paper,
-  Box,
-  Grid,
-  TextField,
-  Typography,
-  Container,
-  Button,
-} from "@mui/material";
+import { Box, Grid, TextField, Typography, Button } from "@mui/material";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import translateMessage from "../constants/messages";
-import { useAuth } from "../lib/auth";
+import { registerEmployee, usersExistsData } from "../lib/firebase";
+import { useSnackbar } from 'notistack';
 import { useNavigate } from "react-router-dom";
-import { registerEmployee, editUser, usersExistsData } from "../lib/firebase";
+
 const validationSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Mínimo 3 caracteres alfabeticos")
@@ -51,7 +44,6 @@ const FormNewEmployee = () => {
   const navigate = useNavigate();
   const [checkCIValue, setCheckCIValue] = useState(false);
   const [valueRegister, setValueRegister] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -59,9 +51,20 @@ const FormNewEmployee = () => {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const handleClick = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
 
   const handelCheckCI = async (data) => {
-    if(handleValidateNumberCI(data.CI)){
+    if (handleValidateNumberCI(data.CI)) {
       const response = await usersExistsData(data.CI);
       setValueRegister(data.CI);
       if (response.length === 0) {
@@ -70,27 +73,26 @@ const FormNewEmployee = () => {
       } else {
         setCheckCIValue(true);
       }
-    }else{
-      alert("Ingrese una cédula ecuatoriana válida");
+    } else {
+      handleClick("Ingrese una cédula ecuatoriana válida", "info");
     }
-
   };
 
-  const handleValidateNumberCI = (valueCI)=>{
-    const validate= '212121212';
+  const handleValidateNumberCI = (valueCI) => {
+    const validate = "212121212";
     let suma = 0;
     for (let index = 0; index < 9; index += 1) {
       let num = valueCI[index] * validate[index];
       suma += num - (num > 9) * 9;
     }
-    const calcularDecena = suma - (suma%10) +10;
+    const calcularDecena = suma - (suma % 10) + 10;
     const numControl = calcularDecena - suma;
-    if(numControl ==  valueCI[9]){
+    if (numControl == valueCI[9]) {
       return true;
-    }else{
+    } else {
       return false;
     }
-  }
+  };
 
   const onSubmit = async (data) => {
     const dataEmployee = {
@@ -108,8 +110,10 @@ const FormNewEmployee = () => {
     };
     try {
       await registerEmployee(dataEmployee);
+      handleClick("Usuario registrado con éxito.", "success");
+      navigate("/admin/list");
     } catch (error) {
-      console.log(translateMessage(error.code));
+      handleClick(translateMessage(error.code), "error");
     }
   };
 
@@ -127,7 +131,7 @@ const FormNewEmployee = () => {
               {...register("name")}
               error={errors.name ? true : false}
             />
-            <Typography variant="inherit" color="textSecondary">
+            <Typography variant="inherit" color="error">
               {errors.name?.message}
             </Typography>
           </Grid>
@@ -141,7 +145,7 @@ const FormNewEmployee = () => {
               {...register("secondName")}
               error={errors.secondName ? true : false}
             />
-            <Typography variant="inherit" color="textSecondary">
+            <Typography variant="inherit" color="error">
               {errors.secondName?.message}
             </Typography>
           </Grid>
@@ -155,7 +159,7 @@ const FormNewEmployee = () => {
               {...register("lastname")}
               error={errors.lastname ? true : false}
             />
-            <Typography variant="inherit" color="textSecondary">
+            <Typography variant="inherit" color="error">
               {errors.lastname?.message}
             </Typography>
           </Grid>
@@ -169,7 +173,7 @@ const FormNewEmployee = () => {
               {...register("secondLastname")}
               error={errors.secondLastname ? true : false}
             />
-            <Typography variant="inherit" color="textSecondary">
+            <Typography variant="inherit" color="error">
               {errors.secondLastname?.message}
             </Typography>
           </Grid>
@@ -183,7 +187,7 @@ const FormNewEmployee = () => {
               {...register("email")}
               error={errors.email ? true : false}
             />
-            <Typography variant="inherit" color="textSecondary">
+            <Typography variant="inherit" color="error">
               {errors.email?.message}
             </Typography>
           </Grid>
@@ -197,11 +201,11 @@ const FormNewEmployee = () => {
               {...register("CI")}
               error={errors.CI ? true : false}
             />
-            <Typography variant="inherit" color="textSecondary">
+            <Typography variant="inherit" color="error">
               {errors.CI?.message}
             </Typography>
             {checkCIValue ? (
-              <Typography>
+              <Typography textAlign={"center"} color="error">
                 El número de cédula: {valueRegister} ya ha sido registrado
               </Typography>
             ) : null}

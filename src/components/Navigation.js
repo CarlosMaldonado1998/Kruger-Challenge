@@ -1,19 +1,13 @@
 import React from "react";
 import { useAuth } from "../lib/auth";
-import { Link } from "react-router-dom";
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import { Box, Toolbar, Typography, IconButton  } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import NavItemsAdmin from "./NavItemsAdmin";
 import NavItemsUser from "./NavItemsUser";
 import NavIcon from "./NavIcon";
-import { Container } from "@mui/material";
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -73,26 +67,24 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 function ElevationScroll(props) {
-  const { children, window } = props;
+  const { children } = props;
 
   return React.cloneElement(children, {
     elevation: 4,
     style: {
-      backgroundColor: "rgba(85, 108, 214, 0.95)",
-      color: "rgba(85, 108, 214, 0.95)",
+      backgroundColor: "rgba(240, 202, 34, 0.95)",
+      color: "rgba(240, 202, 34, 0.95)",
     },
   });
 }
 
 const Navigation = (props) => {
   const { user } = useAuth();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };

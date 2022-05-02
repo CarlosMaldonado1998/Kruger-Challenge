@@ -163,7 +163,6 @@ export async function usersDataTypeVaccine(searchKey) {
 }
 
 export async function usersDataRangeDate(date1, date2) {
-  console.log("SE consulto rango");
   const users = [];
   const q = collection(db, "users");
   const request = query(

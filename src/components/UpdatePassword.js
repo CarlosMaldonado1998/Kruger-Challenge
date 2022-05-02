@@ -1,20 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import {
-  Paper,
-  Box,
-  Grid,
-  TextField,
-  Typography,
-  Container,
-  Button,
-} from "@mui/material";
+import { Grid, TextField, Typography, Button } from "@mui/material";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import translateMessage from "../constants/messages";
 import { useAuth } from "../lib/auth";
-import { useNavigate } from "react-router-dom";
 import { updateMyPassword } from "../lib/firebase";
+import { useSnackbar } from 'notistack';
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
@@ -25,9 +16,9 @@ const validationSchema = Yup.object().shape({
     "La contraseña no coincide"
   ),
 });
-const UpdatePassword = ({ userData, onCancel }) => {
+const UpdatePassword = ({ onCancel }) => {
   const { logout } = useAuth();
-  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   const {
     register,
     handleSubmit,
@@ -36,9 +27,21 @@ const UpdatePassword = ({ userData, onCancel }) => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data) => {
-    await updateMyPassword(data.password).then(console.log("contraseña cambiada"))
+  const handleClick = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
 
+  const onSubmit = async (data) => {
+    await updateMyPassword(data.password);
+      handleClick("Contraseña cambiada. Inicie sesión", "success");
+      logout();
+    ;
   };
 
   return (
@@ -66,6 +69,7 @@ const UpdatePassword = ({ userData, onCancel }) => {
                 id="passwordConfirmation"
                 name="passwordConfirmation"
                 label="Confirmación contraseña"
+                type="password"
                 fullWidth
                 margin="dense"
                 {...register("passwordConfirmation")}
@@ -86,7 +90,7 @@ const UpdatePassword = ({ userData, onCancel }) => {
             <Button variant="contained" color="primary" type="submit">
               Cambiar
             </Button>
-            <Button onClick={onCancel} color="secondary" variant="contained">
+            <Button onClick={onCancel} color="terciary" variant="contained">
               Cancelar
             </Button>
           </Grid>

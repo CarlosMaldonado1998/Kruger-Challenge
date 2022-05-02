@@ -1,9 +1,7 @@
 import React from "react";
-import { Box, Container, Grid, Typography, Paper } from "@mui/material";
-import { useAuth } from "../../lib/auth";
+import { Container, Grid, Typography, Paper } from "@mui/material";
 import "../../styles/App.css";
 import FormNewEmployee from "../../components/FormNewEmployee";
-import { width } from "@mui/system";
 
 const customStyle = {
   Container: {

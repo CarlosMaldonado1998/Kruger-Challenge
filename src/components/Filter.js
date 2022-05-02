@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Grid,
   Typography,
@@ -104,7 +104,7 @@ const Filter = ({
               </Grid>
               <Grid m={1}>
                 <Button onClick={onValidate} variant="contained">
-                  Buscar rango 
+                  Buscar rango
                 </Button>
               </Grid>
             </Grid>

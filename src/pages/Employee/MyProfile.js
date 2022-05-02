@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
-  Divider,
   Grid,
-  List,
   ListItem,
   ListItemText,
   Paper,
@@ -30,7 +28,7 @@ const customStyle = {
     backgroundColor: "rgba(255,255,255)",
     padding: "20px",
   },
-  PaperBackground: { backgroundColor: "rgba(26,55,150)" },
+  PaperBackground: { backgroundColor: "rgba(149,240,183)" },
 };
 
 const MyProfile = () => {
@@ -64,8 +62,8 @@ const MyProfile = () => {
       {dataMyUser ? (
         <Container style={customStyle.Container}>
           <Grid p={2} container>
-            <Typography variant="h5" color="primary">
-              Bienvenido {dataMyUser.name}{" "}
+            <Typography variant="h5" color="secondary">
+              Bienvenido {dataMyUser.name}
             </Typography>
           </Grid>
           <Grid>
@@ -101,7 +99,11 @@ const MyProfile = () => {
                       </Typography>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                      <Button  onClick={handleClickOpenUpdate} variant="contained" color="secondary">
+                      <Button
+                        onClick={handleClickOpenUpdate}
+                        variant="contained"
+                        color="primary"
+                      >
                         Actualizar contraseña
                       </Button>
                     </Grid>

@@ -1,21 +1,15 @@
 import * as React from "react";
-
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
   Navigate,
-  useNavigate,
   Outlet,
-  useLocation,
 } from "react-router-dom";
-
 import { useAuth } from "../lib/auth";
 import Login from "../pages/Login";
 import Recover from "../pages/Recover";
 import Navigation from "./Navigation";
-
 import MyProfile from "../pages/Employee/MyProfile";
 import ListEmployees from "../pages/Admin/ListEmployees";
 import RegisterEmployee from "../pages/Admin/RegisterEmployee";

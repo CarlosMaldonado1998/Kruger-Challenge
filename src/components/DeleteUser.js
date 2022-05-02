@@ -1,17 +1,36 @@
 import React from "react";
-import { Box, Grid, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../lib/auth";
 import { deleteUser } from "../lib/firebase";
+import translateMessage from "../constants/messages";
+import { useSnackbar } from 'notistack';
 
 const DeleteUser = ({ userData, onCancel, updateData }) => {
   const { user } = useAuth();
-
   const { handleSubmit } = useForm();
-  console.log("datos user", userData);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleClick = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
+
   const onSubmit = async () => {
     if (user.role === "Admin") {
-      await deleteUser(userData).then(console.log("usuario elminado"), onCancel(), updateData());
+      try {
+        await deleteUser(userData);
+        handleClick("Usuario elminado con éxito", "success");
+        onCancel();
+        updateData();
+      } catch (e) {
+        handleClick(translateMessage(e.code), "error");
+      }
     }
   };
   return (
@@ -32,7 +51,7 @@ const DeleteUser = ({ userData, onCancel, updateData }) => {
             </Button>
           </Grid>
           <Grid m={1}>
-            <Button onClick={onCancel} variant="contained">
+            <Button onClick={onCancel} variant="contained" color="terciary">
               Cancelar
             </Button>
           </Grid>

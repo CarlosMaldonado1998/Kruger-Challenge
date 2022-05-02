@@ -12,11 +12,11 @@ import {
 import * as Yup from "yup";
 import * as dayjs from "dayjs";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { updateUser } from "../lib/firebase";
+import { useSnackbar } from 'notistack';
 
 const typesVaccine = [
   {
@@ -82,13 +82,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
-  const navigate = useNavigate();
   const [stateVaccination, setStateVaccination] = useState("No Vacunado");
   const [typeVaccination, settypeVaccination] = useState("Sputnik");
   const [dosisVaccination, setDosisVaccination] = useState("1 Dosis");
   const [birthdate, setBirthdate] = useState(null);
   const [dateDosisVaccine, setdateDosisVaccine] = useState(null);
   const [checkDates, setCheckDates] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+
   const {
     register,
     handleSubmit,
@@ -97,6 +98,15 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
     resolver: yupResolver(validationSchema),
   });
 
+  const handleClick = (message, variant) => {
+    enqueueSnackbar(message, {
+      variant: variant,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+    });
+  };
   const handleChangeTypeVaccination = (event) => {
     settypeVaccination(event.target.value);
   };
@@ -111,7 +121,6 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
 
   useEffect(() => {
     if (userData) {
-      console.log(userData);
       userData?.birthdate !== ""
         ? setBirthdate(userData.birthdate)
         : setBirthdate(null);
@@ -130,6 +139,7 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
         : setdateDosisVaccine(null);
     }
   }, [userData]);
+
   const onSubmit = async (data) => {
     if (birthdate != null) {
       setCheckDates(false);
@@ -141,13 +151,13 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
       };
       if (stateVaccination === "No Vacunado") {
         try {
-          await updateUser(dataComplete).then(
-            console.log("usuario actualizado con exito completo"),
-            onCancel(),
-            onUpdateData()
-          );
+          await updateUser(dataComplete)
+            handleClick("Se ha actualizado la información con éxito", "success");
+            onCancel();
+            onUpdateData();
+          ;
         } catch (e) {
-          console.log("algo ha ocurriedo", e);
+          handleClick("Algo ha ocurriedo", "error");
         }
       } else {
         if (dateDosisVaccine != null) {
@@ -160,13 +170,13 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
             dateVaccineTimestamp: dayjs(dateDosisVaccine).unix(),
           };
           try {
-            await updateUser(VaccinateComplete).then(
-              console.log("usuario actualizado con exito"),
-              onCancel(),
-              onUpdateData()
-            );
+            await updateUser(VaccinateComplete)
+              handleClick("Se ha actualizado la información con éxito", "success");
+              onCancel();
+              onUpdateData();
+            ;
           } catch (e) {
-            console.log("algo ha ocurriedo", e);
+            handleClick("Algo ha ocurriedo", "error");
           }
         } else {
           setCheckDates(true);
@@ -299,7 +309,7 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
             {...register("telephone")}
             error={errors.telephone ? true : false}
           />
-          <Typography variant="inherit" color="textSecondary">
+          <Typography variant="inherit" color="error">
             {errors.telephone?.message}
           </Typography>
         </Grid>
@@ -384,7 +394,7 @@ const FormEditProfile = ({ userData, onCancel, onUpdateData }) => {
         <Button variant="contained" color="primary" type="submit">
           Actualizar
         </Button>
-        <Button onClick={onCancel} color="secondary" variant="contained">
+        <Button onClick={onCancel} color="terciary" variant="contained">
           Cancelar
         </Button>
       </Grid>

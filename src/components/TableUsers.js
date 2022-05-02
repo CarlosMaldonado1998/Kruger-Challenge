@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import React, { useState } from "react";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableFooter,
+  TablePagination,
+  TableHead,
+  Paper,
+  IconButton,
+  Dialog,
+} from "@mui/material";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
@@ -18,7 +21,6 @@ import { useTheme } from "@mui/material/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PropTypes from "prop-types";
-import { Dialog } from "@mui/material";
 import DeleteUser from "./DeleteUser";
 import dayjs from "dayjs";
 
@@ -169,6 +171,7 @@ const TableUsers = ({ data, onHandleOpen, updateData }) => {
                     <IconButton
                       aria-label="upload picture"
                       component="span"
+                      color="secondary"
                       onClick={() => {
                         handleClickOpenDelete(row);
                       }}
