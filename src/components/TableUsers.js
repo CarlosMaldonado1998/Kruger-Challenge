@@ -117,8 +117,13 @@ const TableUsers = ({ data, onHandleOpen, updateData }) => {
     <>
       {data ? (
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="customized table">
-            <TableHead>
+          <Table
+            sx={{ minWidth: 200, tableLayout: { xs: "fixed", md: "fixed", lg: "unset" } }}
+            aria-label="customized table"
+          >
+            <TableHead
+              sx={{ display: { xs: "table", md: "table", lg: "table-header-group" } }}
+            >
               <TableRow>
                 <TableCell>Role</TableCell>
                 <TableCell align="left">Nombre</TableCell>
@@ -131,7 +136,9 @@ const TableUsers = ({ data, onHandleOpen, updateData }) => {
                 <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody
+              sx={{ display: { xs: "table", md: "table", lg: "table-header-group" } }}
+            >
               {(rowsPerPage > 0
                 ? data.slice(
                     page * rowsPerPage,
